@@ -1,0 +1,29 @@
+.health-container {
+
+    width: 90%;
+
+    margin: 40px auto;
+
+}
+
+.health-card {
+
+    background: #081a44;
+
+    border: 1px solid #1e40af;
+
+    border-radius: 12px;
+
+    padding: 25px;
+
+    text-align: center;
+
+}
+
+.health-card h3 {
+
+    font-size: 2rem;
+
+    margin-bottom: 20px;
+
+}

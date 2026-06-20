@@ -1,0 +1,77 @@
+.status-container {
+    width: 90%;
+    margin: 30px auto;
+}
+
+.status-title {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.status-card {
+    background-color: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+
+    padding: 25px;
+
+    text-align: center;
+
+    transition: all 0.3s ease;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.status-card:hover {
+    transform: translateY(-6px);
+
+    border-color: #3b82f6;
+
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+}
+
+.status-card h3 {
+    margin-bottom: 15px;
+
+    font-size: 1.4rem;
+
+    color: #cbd5e1;
+}
+
+.status-card p {
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    margin: 0;
+
+    color: #f8fafc;
+}
+
+.thermal-normal {
+    color: #22c55e !important;
+}
+
+.thermal-warning {
+    color: #f59e0b !important;
+}
+
+.thermal-throttling {
+    color: #ef4444 !important;
+}
+
+@media (max-width: 768px) {
+
+    .status-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}

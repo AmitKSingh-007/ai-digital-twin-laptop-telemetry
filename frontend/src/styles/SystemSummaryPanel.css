@@ -1,0 +1,40 @@
+.summary-container {
+
+    width: 90%;
+
+    margin: 40px auto;
+
+}
+
+.summary-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
+    gap: 20px;
+
+}
+
+.summary-card {
+
+    background: #081a44;
+
+    border: 1px solid #1e40af;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    text-align: center;
+
+}
+
+.summary-card p {
+
+    font-size: 2rem;
+
+    font-weight: bold;
+
+}

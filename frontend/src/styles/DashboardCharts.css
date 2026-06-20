@@ -1,0 +1,44 @@
+.charts-container {
+
+    width: 90%;
+
+    margin: 50px auto;
+}
+
+.secondary-charts {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    margin-top: 30px;
+}
+
+.chart-card {
+
+    background: #0f172a;
+
+    border: 1px solid #1e293b;
+
+    border-radius: 12px;
+
+    padding: 20px;
+}
+
+.chart-card h2 {
+
+    text-align: center;
+
+    margin-bottom: 15px;
+}
+
+@media (max-width: 900px) {
+
+    .secondary-charts {
+
+        grid-template-columns: 1fr;
+    }
+
+}

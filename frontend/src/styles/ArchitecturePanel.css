@@ -1,0 +1,27 @@
+.architecture-container {
+
+    width: 90%;
+
+    margin: 40px auto;
+
+}
+
+.architecture-card {
+
+    background: #111827;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    border-radius: 12px;
+
+    border: 1px solid #374151;
+
+}
+
+.architecture-card h3 {
+
+    color: #60a5fa;
+
+}

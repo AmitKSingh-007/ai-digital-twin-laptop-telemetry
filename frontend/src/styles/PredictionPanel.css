@@ -1,0 +1,94 @@
+.prediction-container {
+    width: 90%;
+    margin: 50px auto;
+}
+
+.prediction-title {
+    text-align: center;
+    margin-bottom: 30px;
+
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.prediction-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+.prediction-card {
+    background: #0f172a;
+
+    border: 1px solid #1e293b;
+
+    border-radius: 12px;
+
+    padding: 25px;
+
+    text-align: center;
+
+    transition: all 0.25s ease;
+}
+
+.prediction-card:hover {
+    transform: translateY(-4px);
+
+    border-color: #3b82f6;
+}
+
+.prediction-card h3 {
+    margin-bottom: 20px;
+
+    font-size: 1.5rem;
+
+    color: #cbd5e1;
+}
+
+.prediction-value {
+    font-size: 3rem;
+
+    font-weight: 700;
+
+    color: #f8fafc;
+
+    margin-bottom: 10px;
+}
+
+.prediction-risk {
+    font-size: 1.1rem;
+
+    font-weight: 600;
+}
+
+.risk-low {
+    color: #22c55e;
+}
+
+.risk-medium {
+    color: #f59e0b;
+}
+
+.risk-high {
+    color: #ef4444;
+}
+
+.prediction-trend {
+    font-size: 1.1rem;
+
+    font-weight: 600;
+
+    color: #38bdf8;
+}
+
+@media (max-width: 900px) {
+
+    .prediction-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
