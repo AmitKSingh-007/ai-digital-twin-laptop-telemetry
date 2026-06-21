@@ -1,91 +1,26 @@
+
 import { useState } from "react";
-
 import "../styles/ChatPanel.css";
-
 import api from "../services/api";
 
 function ChatPanel() {
 
-    const [question, setQuestion] =
-        useState("");
+    const [question, setQuestion] = useState("");
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const [messages, setMessages] =
-        useState([]);
+    async function sendQuestion(text) {
 
-    const [loading, setLoading] =
-        useState(false);
-
-    async function askQuestion() {
-
-        if (!question.trim()) {
-
-            return;
-
-        }
-
-        const userQuestion = question;
-
-        setQuestion("");
+        if (!text.trim()) return;
 
         setLoading(true);
 
         setMessages(prev => [
-
             ...prev,
-
-            {
-                role: "user",
-                content: userQuestion
-            }
-
-        ]);
-
-        try {
-
-            const response =
-                await api.post(
-                    "/chat",
-                    {
-                        question: userQuestion
-                    }
-                );
-
-            setMessages(prev => [
-
-                ...prev,
-
-                {
-                    role: "assistant",
-                    content: response.data.answer
-                }
-
-            ]);
-
-        } catch (error) {
-
-            console.error(error);
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    }
-
-    async function askSuggestedQuestion(text) {
-
-        setLoading(true);
-
-        setMessages(prev => [
-
-            ...prev,
-
             {
                 role: "user",
                 content: text
             }
-
         ]);
 
         try {
@@ -99,25 +34,52 @@ function ChatPanel() {
                 );
 
             setMessages(prev => [
-
                 ...prev,
-
                 {
                     role: "assistant",
-                    content: response.data.answer
+                    content:
+                        response.data.answer
                 }
-
             ]);
 
         } catch (error) {
 
             console.error(error);
 
+            setMessages(prev => [
+                ...prev,
+                {
+                    role: "assistant",
+                    content:
+                        "⚠ AI service is currently unavailable."
+                }
+            ]);
+
         } finally {
 
             setLoading(false);
 
         }
+
+    }
+
+    async function askQuestion() {
+
+        const userQuestion = question;
+
+        setQuestion("");
+
+        await sendQuestion(
+            userQuestion
+        );
+
+    }
+
+    async function askSuggestedQuestion(text) {
+
+        if (loading) return;
+
+        await sendQuestion(text);
 
     }
 
@@ -132,6 +94,7 @@ function ChatPanel() {
             <div className="suggested-questions">
 
                 <button
+                    disabled={loading}
                     onClick={() =>
                         askSuggestedQuestion(
                             "Why is my laptop hot?"
@@ -142,6 +105,7 @@ function ChatPanel() {
                 </button>
 
                 <button
+                    disabled={loading}
                     onClick={() =>
                         askSuggestedQuestion(
                             "Will my battery degrade?"
@@ -152,6 +116,7 @@ function ChatPanel() {
                 </button>
 
                 <button
+                    disabled={loading}
                     onClick={() =>
                         askSuggestedQuestion(
                             "Explain detected anomalies."
@@ -162,6 +127,7 @@ function ChatPanel() {
                 </button>
 
                 <button
+                    disabled={loading}
                     onClick={() =>
                         askSuggestedQuestion(
                             "What happens if the cooling fan fails?"
@@ -180,11 +146,15 @@ function ChatPanel() {
                     type="text"
                     value={question}
                     onChange={(e) =>
-                        setQuestion(e.target.value)
+                        setQuestion(
+                            e.target.value
+                        )
                     }
                     onKeyDown={(e) => {
 
-                        if (e.key === "Enter") {
+                        if (
+                            e.key === "Enter"
+                        ) {
 
                             askQuestion();
 
@@ -210,8 +180,8 @@ function ChatPanel() {
 
             <div className="chat-history">
 
-                {
-                    messages.map((msg, index) => (
+                {messages.map(
+                    (msg, index) => (
 
                         <div
                             key={index}
@@ -223,15 +193,12 @@ function ChatPanel() {
                         >
 
                             <strong>
-
                                 {
                                     msg.role === "user"
                                         ? "You"
                                         : "AI"
                                 }
-
                                 :
-
                             </strong>
 
                             <p>
@@ -240,27 +207,24 @@ function ChatPanel() {
 
                         </div>
 
-                    ))
-
-                }
-
-                {
-                    loading && (
-
-                        <div className="assistant-message">
-
-                            <strong>
-                                AI:
-                            </strong>
-
-                            <p>
-                                🤖 Analyzing telemetry...
-                            </p>
-
-                        </div>
-
                     )
-                }
+                )}
+
+                {loading && (
+
+                    <div className="assistant-message">
+
+                        <strong>
+                            AI:
+                        </strong>
+
+                        <p>
+                            🤖 Analyzing telemetry...
+                        </p>
+
+                    </div>
+
+                )}
 
             </div>
 
@@ -268,7 +232,7 @@ function ChatPanel() {
 
     );
 
-
 }
 
 export default ChatPanel;
+

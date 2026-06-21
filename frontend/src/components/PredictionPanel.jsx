@@ -1,57 +1,51 @@
+
 import { useState } from "react";
-
 import api from "../services/api";
-
 import "../styles/PredictionPanel.css";
-
 import useAutoRefresh from "../utils/autoRefresh";
-
 
 function PredictionPanel() {
 
-    const [battery, setBattery] =
-        useState(null);
+    const [battery, setBattery] = useState(null);
+    const [temperature, setTemperature] = useState(null);
+    const [disk, setDisk] = useState(null);
 
-    const [temperature, setTemperature] =
-        useState(null);
-
-    const [disk, setDisk] =
-        useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     async function loadPredictions() {
 
         try {
 
-            const batteryResponse =
-                await api.get(
-                    "/predictions/battery"
-                );
+            const [
+                batteryResponse,
+                temperatureResponse,
+                diskResponse
+            ] = await Promise.all([
+                api.get("/predictions/battery"),
+                api.get("/predictions/temperature"),
+                api.get("/predictions/disk")
+            ]);
 
-            const temperatureResponse =
-                await api.get(
-                    "/predictions/temperature"
-                );
-
-            const diskResponse =
-                await api.get(
-                    "/predictions/disk"
-                );
-
-            setBattery(
-                batteryResponse.data
-            );
-
+            setBattery(batteryResponse.data);
             setTemperature(
                 temperatureResponse.data
             );
+            setDisk(diskResponse.data);
 
-            setDisk(
-                diskResponse.data
-            );
+            setError("");
 
         } catch (error) {
 
             console.error(error);
+
+            setError(
+                "Waiting for prediction service..."
+            );
+
+        } finally {
+
+            setLoading(false);
 
         }
 
@@ -62,14 +56,23 @@ function PredictionPanel() {
         5000
     );
 
+    if (loading) {
 
-    if (
-        !battery ||
-        !temperature ||
-        !disk
-    ) {
+        return (
+            <div className="prediction-container">
+                <p>Loading predictions...</p>
+            </div>
+        );
 
-        return <p>Loading predictions...</p>;
+    }
+
+    if (error) {
+
+        return (
+            <div className="prediction-container">
+                <p>{error}</p>
+            </div>
+        );
 
     }
 
@@ -78,7 +81,7 @@ function PredictionPanel() {
         <div className="prediction-container">
 
             <h2 className="prediction-title">
-                Predictions
+                AI Predictions
             </h2>
 
             <div className="prediction-grid">
@@ -91,7 +94,15 @@ function PredictionPanel() {
                         {battery.predicted_health_30_days}%
                     </div>
 
-                    <div className="prediction-risk risk-low">
+                    <div
+                        className="prediction-risk"
+                        style={{
+                            color:
+                                battery.risk === "HIGH"
+                                    ? "#ef4444"
+                                    : "#22c55e"
+                        }}
+                    >
                         Risk: {battery.risk}
                     </div>
 
@@ -105,7 +116,15 @@ function PredictionPanel() {
                         {temperature.predicted_temperature_10min}°C
                     </div>
 
-                    <div className="prediction-trend">
+                    <div
+                        className="prediction-trend"
+                        style={{
+                            color:
+                                temperature.trend === "RISING"
+                                    ? "#f59e0b"
+                                    : "#22c55e"
+                        }}
+                    >
                         {temperature.trend}
                     </div>
 
@@ -119,7 +138,15 @@ function PredictionPanel() {
                         {disk.predicted_health_30_days}%
                     </div>
 
-                    <div className="prediction-risk risk-low">
+                    <div
+                        className="prediction-risk"
+                        style={{
+                            color:
+                                disk.risk === "HIGH"
+                                    ? "#ef4444"
+                                    : "#22c55e"
+                        }}
+                    >
                         Risk: {disk.risk}
                     </div>
 
@@ -134,3 +161,4 @@ function PredictionPanel() {
 }
 
 export default PredictionPanel;
+

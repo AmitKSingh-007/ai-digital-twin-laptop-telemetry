@@ -1,0 +1,112 @@
+
+.dashboard {
+    min-height: 100vh;
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #020617 0%,
+            #0f172a 40%,
+            #111827 100%
+        );
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.dashboard-header h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+
+    margin: 0 0 15px 0;
+
+    color: #ffffff;
+}
+
+  
+
+.dashboard-header p {
+    color: #94a3b8;
+    font-size: 1.1rem;
+}
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    align-items: start;
+
+    margin-bottom: 30px;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 1000px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.analytics-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 2fr;
+
+    gap: 25px;
+
+    align-items: start;
+
+    margin-bottom: 30px;
+}
+
+@media (max-width: 1000px) {
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.intelligence-section {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 30px;
+
+    margin-bottom: 40px;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+#status,
+#architecture,
+#summary,
+#analytics,
+#predictions,
+#anomalies,
+#simulation,
+#assistant {
+    scroll-margin-top: 80px;
+}

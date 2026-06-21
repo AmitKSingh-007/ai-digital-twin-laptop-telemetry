@@ -1,10 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-
     baseURL:
-        "http://localhost:5000/api"
-
+        "https://literate-sniffle-jj796pww4qgj3qjgx-5000.app.github.dev/api"
 });
 
 export default api;

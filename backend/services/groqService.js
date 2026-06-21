@@ -28,16 +28,46 @@ async function askGroq(context) {
 
                         Use historical anomalies separately from current state.
 
-                        Provide:
-                        1. Explanation
-                        2. Root cause
-                        3. Recommendation
+                        Provide your answer EXACTLY in this format:
 
-                        Use only the supplied context.
+                        1. Explanation:
+                        - point 1
+                        - point 2
+                       
 
-                        Never invent telemetry values.
+                        2. Root Cause:
+                        - point 1
+                        - point 2
+                      
 
-                        Keep answers concise and practical.
+                        3. Recommendation:
+                        - point 1
+                        - point 2
+                        
+Rules:
+- Use bullet points
+- Put each bullet on a new line
+- Each bullet must be a single sentence
+- Never insert a line break inside a bullet point
+- Start a new line only when starting a new bullet
+- Keep answers concise and focused on the most relevant information
+
+                        Example:
+
+                        1. Explanation:
+                        - Thermal throttling events were detected.
+                        - Fan operated at maximum speed multiple times.
+                        - Memory utilization exceeded the safe threshold.
+
+                        2. Root Cause:
+                        - Sustained high workload.
+                        - Increased cooling demand.
+                        - High memory consumption.
+
+                        3. Recommendation:
+                        - Improve airflow around the laptop.
+                        - Close unnecessary applications.
+                        - Monitor temperature and memory trends.
                     `
                 },
 

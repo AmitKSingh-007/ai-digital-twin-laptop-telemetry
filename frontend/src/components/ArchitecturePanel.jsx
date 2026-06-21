@@ -1,3 +1,4 @@
+
 import "../styles/ArchitecturePanel.css";
 
 function ArchitecturePanel() {
@@ -7,13 +8,13 @@ function ArchitecturePanel() {
         <div className="architecture-container">
 
             <h2>
-                How The Digital Twin Works
+                Digital Twin Architecture
             </h2>
 
             <div className="architecture-card">
 
                 <h3>
-                    Telemetry Generation
+                    📡 Telemetry Generation
                 </h3>
 
                 <p>
@@ -26,10 +27,9 @@ function ArchitecturePanel() {
                 </p>
 
                 <p>
-                    Telemetry values are generated
-                    using hardware-inspired
-                    relationships rather than
-                    random independent values.
+                    Hardware-inspired telemetry generation
+                    produces realistic system behavior rather
+                    than random independent values.
                 </p>
 
             </div>
@@ -37,7 +37,7 @@ function ArchitecturePanel() {
             <div className="architecture-card">
 
                 <h3>
-                    Anomaly Detection
+                    ⚠️ Anomaly Detection
                 </h3>
 
                 <p>
@@ -45,6 +45,7 @@ function ArchitecturePanel() {
                     → Rule Engine
                     → Thermal Throttling
                     → Fan Overuse
+                    → Abnormal Temperature Rise
                 </p>
 
             </div>
@@ -52,13 +53,14 @@ function ArchitecturePanel() {
             <div className="architecture-card">
 
                 <h3>
-                    Prediction Engine
+                    🔮 Prediction Engine
                 </h3>
 
                 <p>
                     Historical Telemetry
-                    → Battery Prediction
-                    → Temperature Prediction
+                    → Battery Health Prediction
+                    → Temperature Forecasting
+                    → Component Degradation Analysis
                 </p>
 
             </div>
@@ -66,13 +68,14 @@ function ArchitecturePanel() {
             <div className="architecture-card">
 
                 <h3>
-                    Simulation Engine
+                    🧪 Simulation Engine
                 </h3>
 
                 <p>
-                    Fan Failure
-                    • Desert Heat
-                    • Heavy Compile
+                    Fan Failure Scenario
+                    • Desert Heat Exposure
+                    • Heavy Compilation Workload
+                    • Thermal Stress Testing
                 </p>
 
             </div>
@@ -80,7 +83,7 @@ function ArchitecturePanel() {
             <div className="architecture-card">
 
                 <h3>
-                    AI Digital Twin
+                    🤖 AI Digital Twin Assistant
                 </h3>
 
                 <p>
@@ -88,7 +91,9 @@ function ArchitecturePanel() {
                     Predictions +
                     Anomalies +
                     Simulations
-                    → AI Assistant
+                    → Intelligent Recommendations
+                    → User Queries
+                    → System Insights
                 </p>
 
             </div>
@@ -100,3 +105,4 @@ function ArchitecturePanel() {
 }
 
 export default ArchitecturePanel;
+

@@ -1,32 +1,36 @@
+
 import { useState } from "react";
-
 import api from "../services/api";
-
 import "../styles/AnomalyPanel.css";
-
 import useAutoRefresh from "../utils/autoRefresh";
 
 function AnomalyPanel() {
 
-    const [anomalies, setAnomalies] =
-        useState([]);
+    const [anomalies, setAnomalies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     async function loadAnomalies() {
 
         try {
 
             const response =
-                await api.get(
-                    "/anomalies"
-                );
+                await api.get("/anomalies");
 
-            setAnomalies(
-                response.data
-            );
+            setAnomalies(response.data);
+            setError("");
 
         } catch (error) {
 
             console.error(error);
+
+            setError(
+                "Waiting for anomaly detection service..."
+            );
+
+        } finally {
+
+            setLoading(false);
 
         }
 
@@ -37,6 +41,26 @@ function AnomalyPanel() {
         5000
     );
 
+    if (loading) {
+
+        return (
+            <div className="anomaly-container">
+                <p>Loading anomalies...</p>
+            </div>
+        );
+
+    }
+
+    if (error) {
+
+        return (
+            <div className="anomaly-container">
+                <p>{error}</p>
+            </div>
+        );
+
+    }
+
     return (
 
         <div className="anomaly-container">
@@ -45,36 +69,49 @@ function AnomalyPanel() {
                 Detected Anomalies
             </h2>
 
-            <div className="anomaly-grid">
+            {anomalies.length === 0 ? (
 
-                {anomalies.map((anomaly, index) => (
+                <div className="anomaly-card">
+                    <h3>✅ No Active Anomalies</h3>
+                    <p>
+                        System is operating normally.
+                    </p>
+                </div>
 
-                    <div
-                        key={index}
-                        className="anomaly-card"
-                    >
+            ) : (
 
-                        <h3>
-                            {anomaly.type}
-                        </h3>
+                <div className="anomaly-grid">
 
-                        <div
-                            className={
-                                `severity ${anomaly.severity.toLowerCase()}`
-                            }
-                        >
-                            {anomaly.severity}
-                        </div>
+                    {anomalies.map(
+                        (anomaly, index) => (
 
-                        <p>
-                            {anomaly.message}
-                        </p>
+                            <div
+                                key={index}
+                                className="anomaly-card"
+                            >
 
-                    </div>
+                                <h3>
+                                    {anomaly.type}
+                                </h3>
 
-                ))}
+                                <div
+                                    className={`severity ${anomaly.severity.toLowerCase()}`}
+                                >
+                                    {anomaly.severity}
+                                </div>
 
-            </div>
+                                <p>
+                                    {anomaly.message}
+                                </p>
+
+                            </div>
+
+                        )
+                    )}
+
+                </div>
+
+            )}
 
         </div>
 
@@ -83,3 +120,4 @@ function AnomalyPanel() {
 }
 
 export default AnomalyPanel;
+

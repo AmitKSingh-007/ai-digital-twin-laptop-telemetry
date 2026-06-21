@@ -1,7 +1,7 @@
+
 import { useState } from "react";
 
 import api from "../services/api";
-
 import "../styles/SimulationPanel.css";
 
 import {
@@ -16,23 +16,33 @@ import {
 
 function SimulationPanel() {
 
-    const [result, setResult] =
-        useState(null);
+    const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     async function runSimulation(endpoint) {
+
+        setLoading(true);
+        setError("");
 
         try {
 
             const response =
                 await api.get(endpoint);
 
-            setResult(
-                response.data
-            );
+            setResult(response.data);
 
         } catch (error) {
 
             console.error(error);
+
+            setError(
+                "Simulation service unavailable."
+            );
+
+        } finally {
+
+            setLoading(false);
 
         }
 
@@ -49,6 +59,7 @@ function SimulationPanel() {
             <div className="simulation-buttons">
 
                 <button
+                    disabled={loading}
                     onClick={() =>
                         runSimulation(
                             "/simulations/fan-failure"
@@ -59,6 +70,7 @@ function SimulationPanel() {
                 </button>
 
                 <button
+                    disabled={loading}
                     onClick={() =>
                         runSimulation(
                             "/simulations/desert-heat"
@@ -69,6 +81,7 @@ function SimulationPanel() {
                 </button>
 
                 <button
+                    disabled={loading}
                     onClick={() =>
                         runSimulation(
                             "/simulations/heavy-compile"
@@ -80,6 +93,18 @@ function SimulationPanel() {
 
             </div>
 
+            {loading && (
+                <p>
+                    Running simulation...
+                </p>
+            )}
+
+            {error && (
+                <p>
+                    {error}
+                </p>
+            )}
+
             {result && (
 
                 <div className="simulation-result">
@@ -88,30 +113,65 @@ function SimulationPanel() {
                         {result.scenario}
                     </h3>
 
-                    <div className="simulation-summary">
+                   <div className="simulation-summary">
 
-                        <div className="simulation-metric">
-                            <span>Temperature</span>
-                            <strong>
-                                {result.predicted_temperature_c}°C
-                            </strong>
-                        </div>
+    <div className="simulation-metric">
+        <span>Temperature</span>
 
-                        <div className="simulation-metric">
-                            <span>Risk</span>
-                            <strong>
-                                {result.risk}
-                            </strong>
-                        </div>
+        <strong
+            style={{
+                color:
+                    result.predicted_temperature_c >= 90
+                        ? "#ef4444"
+                        : result.predicted_temperature_c >= 75
+                        ? "#f59e0b"
+                        : "#22c55e"
+            }}
+        >
+            {result.predicted_temperature_c}°C
+        </strong>
 
-                        <div className="simulation-metric">
-                            <span>Thermal State</span>
-                            <strong>
-                                {result.thermal_state}
-                            </strong>
-                        </div>
+    </div>
 
-                    </div>
+    <div className="simulation-metric">
+
+        <span>Risk</span>
+
+        <strong
+            style={{
+                color:
+                    result.risk === "HIGH"
+                        ? "#ef4444"
+                        : result.risk === "MEDIUM"
+                        ? "#f59e0b"
+                        : "#22c55e"
+            }}
+        >
+            {result.risk}
+        </strong>
+
+    </div>
+
+    <div className="simulation-metric">
+
+        <span>Thermal State</span>
+
+        <strong
+            style={{
+                color:
+                    result.thermal_state === "THROTTLING"
+                        ? "#ef4444"
+                        : result.thermal_state === "WARNING"
+                        ? "#f59e0b"
+                        : "#22c55e"
+            }}
+        >
+            {result.thermal_state}
+        </strong>
+
+    </div>
+
+</div>
 
                     <h4>
                         Predicted Temperature Timeline
@@ -160,3 +220,4 @@ function SimulationPanel() {
 }
 
 export default SimulationPanel;
+

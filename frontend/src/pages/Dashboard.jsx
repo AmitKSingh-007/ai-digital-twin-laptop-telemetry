@@ -1,22 +1,14 @@
+import "../styles/Dashboard.css";
+import Navbar from "../components/Navbar";
+
 import TwinStatus from "../components/TwinStatus";
-
 import DashboardCharts from "../components/DashboardCharts";
-
 import PredictionPanel from "../components/PredictionPanel";
-
 import AnomalyPanel from "../components/AnomalyPanel";
-
 import SimulationPanel from "../components/SimulationPanel";
-
 import ChatPanel from "../components/ChatPanel";
-
-import ArchitecturePanel from "../components/ArchitecturePanel";
-
-import TelemetryViewer from "../components/TelemetryViewer";
-
 import SystemSummaryPanel from "../components/SystemSummaryPanel";
-
-import HealthOverviewPanel from "../components/HealthOverviewPanel";
+import ArchitecturePanel from "../components/ArchitecturePanel";
 
 function Dashboard() {
 
@@ -24,31 +16,57 @@ function Dashboard() {
 
         <div className="dashboard">
 
-            <h1>
-                Laptop Digital Twin
-            </h1>
+            <Navbar />
 
-            <TwinStatus />
+            <div className="dashboard-header">
 
-            <ArchitecturePanel />
+                <h1>
+                    💻 AI Digital Twin For Laptop Telemetry
+                </h1>
 
-            <TelemetryViewer />
+                <p>
+                    Real-time telemetry, predictions,
+                    anomaly detection and AI insights
+                </p>
 
-            <SystemSummaryPanel />
+            </div>
 
-            <HealthOverviewPanel />
+            <div id="status">
+                <TwinStatus />
+            </div>
 
-            <h1 className="section-title"> Historical Telemetry</h1>
+            <div id="architecture">
+                <ArchitecturePanel />
+            </div>
 
-            <DashboardCharts />
+            <div id="summary">
+                <SystemSummaryPanel />
+            </div>
 
-            <PredictionPanel />
+            <div id="analytics">
+                <DashboardCharts />
+            </div>
 
-            <AnomalyPanel />
+            <div
+                id="predictions"
+                className="intelligence-section"
+            >
 
-            <SimulationPanel />
+                <PredictionPanel />
 
-            <ChatPanel />
+                <div id="anomalies">
+                    <AnomalyPanel />
+                </div>
+
+            </div>
+
+            <div id="simulation">
+                <SimulationPanel />
+            </div>
+
+            <div id="assistant">
+                <ChatPanel />
+            </div>
 
         </div>
 

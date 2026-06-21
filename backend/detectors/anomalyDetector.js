@@ -123,6 +123,29 @@ function detectFanOveruse() {
     }
     return null;
 };
+function detectMemoryPressure() {
+
+    const latest = telemetryService.getLatestTelemetry();
+
+    if (latest.memory_utilization_pct >= 40) {
+
+        return {
+
+            type: "MEMORY_PRESSURE",
+
+            severity:
+                latest.memory_utilization_pct >= 60
+                    ? "HIGH"
+                    : "MEDIUM",
+
+            message:
+                `Memory utilization is ${latest.memory_utilization_pct}%`
+        };
+
+    }
+
+    return null;
+}
 
 function detectAnomalies() {
 
@@ -138,7 +161,9 @@ function detectAnomalies() {
 
         detectDiskHealth(),
 
-        detectFanOveruse()
+        detectFanOveruse(),
+
+        detectMemoryPressure()
 
     ];
 
@@ -163,6 +188,8 @@ module.exports = {
 
     detectFanOveruse,
 
-    detectAnomalies
+    detectAnomalies,
+
+    detectMemoryPressure
 
 };

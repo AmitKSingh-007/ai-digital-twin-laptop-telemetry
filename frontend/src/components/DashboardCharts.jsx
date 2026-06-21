@@ -1,9 +1,7 @@
+
 import { useState } from "react";
-
 import api from "../services/api";
-
 import "../styles/DashboardCharts.css";
-
 import useAutoRefresh from "../utils/autoRefresh";
 
 import {
@@ -18,23 +16,30 @@ import {
 
 function DashboardCharts() {
 
-    const [history, setHistory] =
-        useState([]);
+    const [history, setHistory] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     async function loadHistory() {
 
         try {
 
             const response =
-                await api.get("telemetry/history");
+                await api.get("/telemetry/history");
 
-            setHistory(
-                response.data
-            );
+            setHistory(response.data);
+            setError("");
 
         } catch (error) {
 
             console.error(error);
+            setError(
+                "Waiting for telemetry history from backend..."
+            );
+
+        } finally {
+
+            setLoading(false);
 
         }
 
@@ -45,7 +50,21 @@ function DashboardCharts() {
         5000
     );
 
-    <h1 className="section-title"> Historical Telemetry</h1>
+    if (loading) {
+        return (
+            <div className="charts-container">
+                <h2>Loading charts...</h2>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="charts-container">
+                <h2>{error}</h2>
+            </div>
+        );
+    }
 
     return (
 
@@ -53,9 +72,9 @@ function DashboardCharts() {
 
             <div
                 style={{
-                    width: "90%",
-                    margin: "40px auto"
-                }}
+                    width: "100%",
+                    margin: "0"
+        }}
             >
 
                 <h2>
@@ -138,7 +157,6 @@ function DashboardCharts() {
 
                 </div>
 
-
                 <div className="chart-card">
 
                     <h2>
@@ -187,3 +205,4 @@ function DashboardCharts() {
 }
 
 export default DashboardCharts;
+

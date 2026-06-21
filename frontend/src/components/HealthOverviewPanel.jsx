@@ -1,22 +1,17 @@
+
 import { useEffect, useState } from "react";
-
 import api from "../services/api";
-
 import "../styles/HealthOverviewPanel.css";
 
 function HealthOverviewPanel() {
 
-    const [battery, setBattery] =
-        useState(null);
+    const [battery, setBattery] = useState(null);
+    const [disk, setDisk] = useState(null);
+    const [temperature, setTemperature] = useState(null);
+    const [anomalies, setAnomalies] = useState([]);
 
-    const [disk, setDisk] =
-        useState(null);
-
-    const [temperature, setTemperature] =
-        useState(null);
-
-    const [anomalies, setAnomalies] =
-        useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
 
@@ -24,45 +19,40 @@ function HealthOverviewPanel() {
 
             try {
 
-                const batteryResponse =
-                    await api.get(
-                        "/predictions/battery"
-                    );
+                const [
+                    batteryResponse,
+                    diskResponse,
+                    temperatureResponse,
+                    anomalyResponse
+                ] = await Promise.all([
+                    api.get("/predictions/battery"),
+                    api.get("/predictions/disk"),
+                    api.get("/predictions/temperature"),
+                    api.get("/anomalies")
+                ]);
 
-                const diskResponse =
-                    await api.get(
-                        "/predictions/disk"
-                    );
-
-                const temperatureResponse =
-                    await api.get(
-                        "/predictions/temperature"
-                    );
-
-                const anomalyResponse =
-                    await api.get(
-                        "/anomalies"
-                    );
-
-                setBattery(
-                    batteryResponse.data
-                );
-
-                setDisk(
-                    diskResponse.data
-                );
-
+                setBattery(batteryResponse.data);
+                setDisk(diskResponse.data);
                 setTemperature(
                     temperatureResponse.data
                 );
-
                 setAnomalies(
                     anomalyResponse.data
                 );
 
+                setError("");
+
             } catch (error) {
 
                 console.error(error);
+
+                setError(
+                    "Waiting for health prediction service..."
+                );
+
+            } finally {
+
+                setLoading(false);
 
             }
 
@@ -72,19 +62,33 @@ function HealthOverviewPanel() {
 
     }, []);
 
-    if (
-        !battery ||
-        !disk ||
-        !temperature
-    ) {
+    if (loading) {
 
-        return <p>Loading...</p>;
+        return (
+            <div className="health-container">
+                <p>Loading health overview...</p>
+            </div>
+        );
+
+    }
+
+    if (error) {
+
+        return (
+            <div className="health-container">
+                <p>{error}</p>
+            </div>
+        );
 
     }
 
     let overallStatus = "HEALTHY";
 
-    if (battery.risk === "HIGH" || disk.risk === "HIGH" || temperature.risk === "HIGH") {
+    if (
+        battery?.risk === "HIGH" ||
+        disk?.risk === "HIGH" ||
+        temperature?.risk === "HIGH"
+    ) {
 
         overallStatus = "WARNING";
 
@@ -100,33 +104,38 @@ function HealthOverviewPanel() {
 
             <div className="health-card">
 
-                <h3>
+                <h3
+                    style={{
+                        color:
+                            overallStatus === "HEALTHY"
+                                ? "#22c55e"
+                                : "#ef4444"
+                    }}
+                >
                     {overallStatus}
                 </h3>
 
                 <p>
-                    Battery Health:
-                    {battery.risk === "LOW"
-                        ? " Excellent"
-                        : " Warning"}
+                    🔋 Battery Health:
+                    {" "}
+                    {battery.risk}
                 </p>
 
                 <p>
-                    Disk Health:
-                    {disk.risk === "LOW"
-                        ? " Excellent"
-                        : " Warning"}
+                    💾 Disk Health:
+                    {" "}
+                    {disk.risk}
                 </p>
 
                 <p>
-                    Thermal Health:
-                    {temperature.risk === "LOW"
-                        ? " Good"
-                        : " Warning"}
+                    🌡 Thermal Health:
+                    {" "}
+                    {temperature.risk}
                 </p>
 
                 <p>
-                    Active Anomalies:
+                    ⚠ Active Anomalies:
+                    {" "}
                     {anomalies.length}
                 </p>
 
@@ -139,3 +148,4 @@ function HealthOverviewPanel() {
 }
 
 export default HealthOverviewPanel;
+
