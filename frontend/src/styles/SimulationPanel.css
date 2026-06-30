@@ -124,3 +124,27 @@
 
     margin-bottom: 20px;
 }
+
+.reset-button {
+
+    background: #475569;
+
+}
+
+.reset-button:hover {
+
+    background: #64748b;
+
+}
+
+.simulation-description {
+
+    text-align: center;
+
+    color: #94a3b8;
+
+    margin-bottom: 20px;
+
+    font-size: 0.95rem;
+
+}

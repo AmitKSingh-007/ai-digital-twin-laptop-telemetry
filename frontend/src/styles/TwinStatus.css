@@ -9,45 +9,144 @@
     font-size: 2rem;
 }
 
+.status-header {
+
+    text-align: center;
+
+    margin-bottom: 35px;
+
+}
+
+.status-subtitle {
+
+    color: #94a3b8;
+
+    margin-top: -10px;
+
+    font-size: 0.95rem;
+
+}
+
 .status-grid {
+
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+
+    grid-template-columns:
+        repeat(auto-fit,
+            minmax(180px,
+                1fr));
+
     gap: 20px;
+
 }
 
 .status-card {
-    background: #0f172a;
-    border: 1px solid #1e293b;
-    border-radius: 12px;
+
+    background:
+        linear-gradient(145deg,
+            #0f172a,
+            #111827);
+
+    border: 1px solid #1e40af;
+
+    border-radius: 18px;
 
     padding: 25px 15px;
 
     text-align: center;
 
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
+
 }
 
 .status-card:hover {
-    transform: translateY(-4px);
-    border-color: #3b82f6;
+
+    transform: translateY(-5px);
+
+    border-color: #60a5fa;
+
+    box-shadow:
+        0 0 20px rgba(59,
+            130,
+            246,
+            0.25);
+
 }
 
 .status-card h3 {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
     margin: 0 0 15px 0;
 
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+
     font-weight: 600;
 
     color: #cbd5e1;
+
 }
 
-.status-card p {
+.status-value {
+
     margin: 0;
 
-    font-size: 2rem;
+    font-size: 2.3rem;
+
     font-weight: 700;
 
-    color: #f8fafc;
+}
+
+.cpu-value {
+
+    color: #22c55e !important;
+
+}
+
+.load-value {
+
+    color: #60a5fa !important;
+
+}
+
+.battery-value {
+
+    color: #fbbf24 !important;
+
+}
+
+.disk-value {
+
+    color: #a855f7 !important;
+
+}
+
+.wifi-value {
+
+    white-space: nowrap;
+
+    color: #38bdf8;
+
+    font-size: 2rem !important;
+
+}
+
+.wifi-status {
+
+    font-size: 1rem !important;
+
+    margin-top: 6px !important;
+
+    color: #94a3b8;
+
+    font-weight: 500 !important;
+
 }
 
 .normal {
@@ -60,6 +159,11 @@
 
 .throttling {
     color: #ef4444;
+}
+
+.critical {
+    color: #dc2626;
+    font-weight: bold;
 }
 
 @media (max-width: 1200px) {

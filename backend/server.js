@@ -12,6 +12,8 @@ const anomalyRoutes = require("./routes/anomaly");
 
 const chatRoutes = require("./routes/chat");
 
+const { appendTelemetryRecord } = require("./data/liveTelemetry");
+
 const app = express();
 
 app.use(cors());
@@ -32,4 +34,14 @@ const PORT = 5000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+
+    console.log(
+        "Live telemetry stream started"
+    );
+    
+    setInterval(() => {
+
+        appendTelemetryRecord();
+
+    }, 5000);
 });

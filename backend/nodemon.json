@@ -1,0 +1,14 @@
+{
+    "watch": [
+        "*.js",
+        "routes",
+        "controllers",
+        "services",
+        "predictors",
+        "simulators",
+        "config"
+    ],
+    "ignore": [
+        "data/telemetry.json"
+    ]
+}

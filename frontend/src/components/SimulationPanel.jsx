@@ -19,12 +19,37 @@ function SimulationPanel() {
     const [result, setResult] =
         useState(null);
 
+    const [activeSimulation,
+        setActiveSimulation] =
+        useState(null);
+
     async function runSimulation(endpoint) {
 
         try {
 
             const response =
                 await api.get(endpoint);
+
+            if (
+                endpoint ===
+                "/simulations/reset"
+            ) {
+
+                setActiveSimulation(
+                    null
+                );
+
+                setResult(
+                    null
+                );
+
+                return;
+
+            }
+
+            setActiveSimulation(
+                endpoint
+            );
 
             setResult(
                 response.data
@@ -78,6 +103,17 @@ function SimulationPanel() {
                     Heavy Compile
                 </button>
 
+                <button
+                    className="reset-button"
+                    onClick={() =>
+                        runSimulation(
+                            "/simulations/reset"
+                        )
+                    }
+                >
+                    Reset Simulation
+                </button>
+
             </div>
 
             {result && (
@@ -114,7 +150,9 @@ function SimulationPanel() {
                     </div>
 
                     <h4>
-                        Predicted Temperature Timeline
+                        <p className="simulation-description">
+                            Forecast based on current system state for the next 10 minutes
+                        </p>
                     </h4>
 
                     <ResponsiveContainer

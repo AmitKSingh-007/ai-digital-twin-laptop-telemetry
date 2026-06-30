@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import "../styles/ChatPanel.css";
 
@@ -14,6 +14,19 @@ function ChatPanel() {
 
     const [loading, setLoading] =
         useState(false);
+
+    const chatEndRef =
+        useRef(null);
+
+    useEffect(() => {
+
+        chatEndRef.current?.scrollIntoView({
+
+            behavior: "smooth"
+
+        });
+
+    }, [messages]);
 
     async function askQuestion() {
 
@@ -242,7 +255,10 @@ function ChatPanel() {
 
                     ))
 
+
                 }
+
+                < div ref={chatEndRef}></div>
 
                 {
                     loading && (
@@ -264,7 +280,7 @@ function ChatPanel() {
 
             </div>
 
-        </div>
+        </div >
 
     );
 

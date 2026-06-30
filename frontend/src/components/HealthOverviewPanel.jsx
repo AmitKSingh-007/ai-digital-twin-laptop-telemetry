@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import api from "../services/api";
 
 import "../styles/HealthOverviewPanel.css";
+
+import useAutoRefresh from "../utils/autoRefresh";
 
 function HealthOverviewPanel() {
 
@@ -18,59 +20,57 @@ function HealthOverviewPanel() {
     const [anomalies, setAnomalies] =
         useState([]);
 
-    useEffect(() => {
+    async function loadData() {
 
-        async function loadData() {
+        try {
 
-            try {
-
-                const batteryResponse =
-                    await api.get(
-                        "/predictions/battery"
-                    );
-
-                const diskResponse =
-                    await api.get(
-                        "/predictions/disk"
-                    );
-
-                const temperatureResponse =
-                    await api.get(
-                        "/predictions/temperature"
-                    );
-
-                const anomalyResponse =
-                    await api.get(
-                        "/anomalies"
-                    );
-
-                setBattery(
-                    batteryResponse.data
+            const batteryResponse =
+                await api.get(
+                    "/predictions/battery"
                 );
 
-                setDisk(
-                    diskResponse.data
+            const diskResponse =
+                await api.get(
+                    "/predictions/disk"
                 );
 
-                setTemperature(
-                    temperatureResponse.data
+            const temperatureResponse =
+                await api.get(
+                    "/predictions/temperature"
                 );
 
-                setAnomalies(
-                    anomalyResponse.data
+            const anomalyResponse =
+                await api.get(
+                    "/anomalies"
                 );
 
-            } catch (error) {
+            setBattery(
+                batteryResponse.data
+            );
 
-                console.error(error);
+            setDisk(
+                diskResponse.data
+            );
 
-            }
+            setTemperature(
+                temperatureResponse.data
+            );
+
+            setAnomalies(
+                anomalyResponse.data
+            );
+
+        } catch (error) {
+
+            console.error(error);
 
         }
+    }
 
-        loadData();
-
-    }, []);
+    useAutoRefresh(
+        loadData,
+        5000
+    );
 
     if (
         !battery ||
@@ -82,6 +82,24 @@ function HealthOverviewPanel() {
 
     }
 
+    let healthScore = 100;
+
+    healthScore -= anomalies.length * 2;
+
+    if (temperature.risk === "HIGH")
+        healthScore -= 15;
+
+    if (battery.risk === "HIGH")
+        healthScore -= 10;
+
+    if (disk.risk === "HIGH")
+        healthScore -= 10;
+
+    healthScore = Math.max(
+        0,
+        Math.round(healthScore)
+    );
+
     let overallStatus = "HEALTHY";
 
     if (battery.risk === "HIGH" || disk.risk === "HIGH" || temperature.risk === "HIGH") {
@@ -90,19 +108,43 @@ function HealthOverviewPanel() {
 
     }
 
+    let scoreColor = "#10b981";
+
+    if (healthScore < 90)
+        scoreColor = "#f59e0b";
+
+    if (healthScore < 70)
+        scoreColor = "#ef4444";
+
     return (
 
-        <div className="health-container">
+        <div className="health-card">
 
-            <h2>
-                Overall Laptop Health
-            </h2>
+            <div className="health-score" style={{
+                borderColor: scoreColor
+            }}>
 
-            <div className="health-card">
+                <div className="score-number" style={{
+                    color: scoreColor
+                }}>
+                    {healthScore}
+                </div>
 
-                <h3>
-                    {overallStatus}
-                </h3>
+                <div className="score-total">
+                    /100
+                </div>
+
+            </div>
+
+            <h3
+                style={{
+                    color: scoreColor
+                }}
+            >
+                {overallStatus}
+            </h3>
+
+            <div className="health-details">
 
                 <p>
                     Battery Health:
@@ -126,13 +168,12 @@ function HealthOverviewPanel() {
                 </p>
 
                 <p>
-                    Active Anomalies:
-                    {anomalies.length}
+                    Active Anomalies: {anomalies.length}
                 </p>
 
             </div>
 
-        </div>
+        </div >
 
     );
 

@@ -1,40 +1,41 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import api from "../services/api";
 
 import "../styles/SystemSummaryPanel.css";
+
+import useAutoRefresh from "../utils/autoRefresh";
 
 function SystemSummaryPanel() {
 
     const [summary, setSummary] =
         useState(null);
 
-    useEffect(() => {
+    async function loadSummary() {
 
-        async function loadSummary() {
+        try {
 
-            try {
-
-                const response =
-                    await api.get(
-                        "/telemetry/summary"
-                    );
-
-                setSummary(
-                    response.data
+            const response =
+                await api.get(
+                    "/telemetry/summary"
                 );
 
-            } catch (error) {
+            setSummary(
+                response.data
+            );
 
-                console.error(error);
+        } catch (error) {
 
-            }
+            console.error(error);
 
         }
 
-        loadSummary();
+    }
 
-    }, []);
+    useAutoRefresh(
+        loadSummary,
+        5000
+    );
 
     if (!summary) {
 

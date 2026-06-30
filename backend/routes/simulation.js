@@ -10,4 +10,6 @@ router.get("/desert-heat", simulationController.simulateDesertHeat);
 
 router.get("/heavy-compile", simulationController.simulateHeavyCompile);
 
+router.get("/reset", simulationController.resetSimulation);
+
 module.exports = router;

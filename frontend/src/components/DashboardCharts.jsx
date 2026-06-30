@@ -29,7 +29,7 @@ function DashboardCharts() {
                 await api.get("telemetry/history");
 
             setHistory(
-                response.data
+                response.data.slice(-100)
             );
 
         } catch (error) {
@@ -45,7 +45,6 @@ function DashboardCharts() {
         5000
     );
 
-    <h1 className="section-title"> Historical Telemetry</h1>
 
     return (
 

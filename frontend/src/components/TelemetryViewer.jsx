@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import api from "../services/api";
+
+import "../styles/TelemetryViewer.css";
+
+import useAutoRefresh from "../utils/autoRefresh";
 
 function TelemetryViewer() {
 
@@ -10,38 +14,37 @@ function TelemetryViewer() {
     const [show, setShow] =
         useState(false);
 
-    useEffect(() => {
+    async function loadTelemetry() {
 
-        async function loadTelemetry() {
+        try {
 
-            try {
-
-                const response =
-                    await api.get(
-                        "/telemetry/latest"
-                    );
-
-                setTelemetry(
-                    response.data
+            const response =
+                await api.get(
+                    "/telemetry/latest"
                 );
 
-            } catch (error) {
+            setTelemetry(
+                response.data
+            );
 
-                console.error(error);
+        } catch (error) {
 
-            }
+            console.error(error);
 
         }
 
-        loadTelemetry();
+    }
 
-    }, []);
+    useAutoRefresh(
+        loadTelemetry,
+        5000
+    );
 
     return (
 
         <div className="telemetry-viewer">
 
-            <button
+            <button className="telemetry-button"
                 onClick={() =>
                     setShow(!show)
                 }
@@ -50,7 +53,7 @@ function TelemetryViewer() {
                 {
                     show
                         ? "Hide Telemetry"
-                        : "View Current Telemetry"
+                        : "Inspect Live Telemetry"
                 }
 
             </button>
@@ -80,6 +83,11 @@ function TelemetryViewer() {
                         <p>
                             Memory:
                             {telemetry.memory_utilization_pct}%
+                        </p>
+
+                        <p>
+                            WiFi Signal:
+                            {telemetry.wifi_signal_dbm} dBm
                         </p>
 
                         <p>

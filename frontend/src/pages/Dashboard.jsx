@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import TwinStatus from "../components/TwinStatus";
 
 import DashboardCharts from "../components/DashboardCharts";
@@ -18,7 +20,13 @@ import SystemSummaryPanel from "../components/SystemSummaryPanel";
 
 import HealthOverviewPanel from "../components/HealthOverviewPanel";
 
+import RawTelemetryViewer from "../components/RawTelemetryViewer";
+
+import "../styles/Dashboard.css";
+
 function Dashboard() {
+
+    const [activeTab, setActiveTab] = useState("dashboard");
 
     return (
 
@@ -28,27 +36,111 @@ function Dashboard() {
                 Laptop Digital Twin
             </h1>
 
-            <TwinStatus />
+            <p className="dashboard-subtitle">
+                AI-powered telemetry, prediction and simulation platform
+            </p>
 
-            <ArchitecturePanel />
+            <div className="tab-bar">
 
-            <TelemetryViewer />
+                <button
+                    onClick={() =>
+                        setActiveTab("dashboard")
+                    }
+                >
+                    Dashboard
+                </button>
 
-            <SystemSummaryPanel />
+                <button
+                    onClick={() =>
+                        setActiveTab("analytics")
+                    }
+                >
+                    Analytics
+                </button>
 
-            <HealthOverviewPanel />
+                <button
+                    onClick={() =>
+                        setActiveTab("simulations")
+                    }
+                >
+                    Simulations
+                </button>
 
-            <h1 className="section-title"> Historical Telemetry</h1>
+                <button
+                    onClick={() =>
+                        setActiveTab("assistant")
+                    }
+                >
+                    AI Assistant
+                </button>
 
-            <DashboardCharts />
+            </div>
 
-            <PredictionPanel />
+            {
+                activeTab === "dashboard" && (
 
-            <AnomalyPanel />
+                    <div className="dashboard-section">
 
-            <SimulationPanel />
+                        <TwinStatus />
 
-            <ChatPanel />
+                        <TelemetryViewer />
+
+                        <SystemSummaryPanel />
+
+                        <HealthOverviewPanel />
+
+                    </div>
+
+                )
+            }
+
+            {
+                activeTab === "analytics" && (
+
+                    <div className="dashboard-section">
+
+                        <ArchitecturePanel />
+
+                        <h1 className="section-title">
+                            Historical Telemetry
+                        </h1>
+
+                        <DashboardCharts />
+
+                        <PredictionPanel />
+
+                        <AnomalyPanel />
+
+                        <RawTelemetryViewer />
+
+                    </div>
+
+                )
+            }
+
+            {
+                activeTab === "simulations" && (
+
+                    <div className="dashboard-section">
+
+                        <SimulationPanel />
+
+                    </div>
+
+                )
+            }
+
+            {
+                activeTab === "assistant" && (
+
+                    <div className="dashboard-section">
+
+                        <ChatPanel />
+
+                    </div>
+
+                )
+            }
 
         </div>
 
